@@ -2,6 +2,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.*
 
 /**
  * Пример
@@ -17,7 +18,13 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    val digit1 = Math.floor(number / 1000.0) % 10
+    val digit2 = Math.floor(number / 100.0) % 10
+    val digit3 = Math.floor(number / 10.0) % 10
+    val digit4 = number % 10
+    return digit1 + digit2 == digit3 + digit4
+}
 
 /**
  * Простая
@@ -44,8 +51,14 @@ fun daysInMonth(month: Int, year: Int): Int = TODO()
  * окружности с центром в (x2, y2) и радиусом r2.
  * Вернуть true, если утверждение верно
  */
+
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = TODO()
+                 x2: Double, y2: Double, r2: Double): Boolean {
+
+    val D = Math.sqrt(Math.pow((x2 - x1), 2.0)  + Math.pow((y2 - y1), 2.0));
+    return if ((D == 0.0 && r1 <= r2) || (D <= Math.abs(r2 - r1)  && r1 < r2)) true
+    else false
+}
 
 /**
  * Средняя
@@ -56,4 +69,23 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    val kmax = Math.max(Math.max(a, b), c)
+    val kmin = Math.min(Math.min(a, b), c)
+    val hmax = Math.max(r, s)
+    val hmin = Math.min(r, s)
+    val kave = when {
+        (a == kmax && b == kmin) || (b == kmax && a == kmin) -> c
+        (a == kmax && c == kmin) || (c == kmax && a == kmin) -> b
+        else -> a
+    }
+
+    return if (hmax  >= kave  && hmin >= kmin) true else false
+
+}
+
+
+fun main(args: Array<String>) {
+    println(brickPasses(111,444,3333,3444,443))
+    println(brickPasses(2, 10, 5, 6, 3))
+}
